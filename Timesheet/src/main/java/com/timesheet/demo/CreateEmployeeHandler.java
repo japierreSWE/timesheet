@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,9 +21,8 @@ import com.timesheet.entity.Employee;
 
 public class CreateEmployeeHandler implements RequestStreamHandler {
 	
-	private boolean addToDatabase(Employee e) {
+	private void addToDatabase(Employee e) throws Exception {
 		//TODO: Add the part where we add it to the database
-		return true;
 	}
 	
     @Override
@@ -74,8 +76,46 @@ public class CreateEmployeeHandler implements RequestStreamHandler {
     	
     	if(!processed) {
     		
+    		CreateEmployeeRequest request = new Gson().fromJson(httpBody, CreateEmployeeRequest.class);
+    		String name = request.name;
+    		String address = request.address;
+    		String user = request.username;
+    		String pass = request.password;
+    		String periodStart = request.periodStart;
+    		LocalDate startDate = null; //this will be the period start parsed into a date
+    		boolean invalidInput = false;
     		
+    		try {
+    			startDate = LocalDate.parse(periodStart); //parse date
+    		} catch(DateTimeParseException e) {
+    			logger.log("Could not parse date");
+        		logger.log(e.toString());
+        		httpResponse = new CreateEmployeeResponse(400, null);
+        		jsonResponse.put("body", new Gson().toJson(httpResponse));
+        		invalidInput = true;
+    		}
     		
+    		if(!invalidInput) {
+    			
+    			Employee emp = new Employee(name, address, user, pass, startDate);
+    			//make employee and try to put it in database
+    			try {
+    				addToDatabase(emp);
+    			} catch(Exception e) {
+    				logger.log("Could not add to database");
+    				logger.log(e.toString());
+    				httpResponse = new CreateEmployeeResponse(400, null);
+            		jsonResponse.put("body", new Gson().toJson(httpResponse));
+    			}
+    			
+    			httpResponse = new CreateEmployeeResponse(200, emp.getID());
+        		jsonResponse.put("body", new Gson().toJson(httpResponse));	
+    		}
+    		
+    		logger.log("result: " + jsonResponse.toJSONString());
+        	OutputStreamWriter writer = new OutputStreamWriter(output, "UTF-8");
+            writer.write(jsonResponse.toJSONString());  
+            writer.close();
     	}
     	
     }

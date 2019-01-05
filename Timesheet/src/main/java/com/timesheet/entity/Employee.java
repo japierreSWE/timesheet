@@ -28,4 +28,8 @@ public class Employee {
 		this.periodStart = start;
 	}
 	
+	public String getID() {
+		return this.employeeID;
+	}
+	
 }
