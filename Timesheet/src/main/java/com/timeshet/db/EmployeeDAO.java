@@ -10,7 +10,7 @@ public class EmployeeDAO extends DAO {
 		super();
 	}
 	
-	public boolean createEmployee(Employee emp) {
+	public void createEmployee(Employee emp) throws Exception {
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO Employee (employeeID, name, address, username, password) VALUES (?,?,?,?,?)");
@@ -20,10 +20,9 @@ public class EmployeeDAO extends DAO {
 			ps.setString(4, emp.username);
 			ps.setString(5, emp.password);
 			ps.execute();
-			return true;
 		} catch(Exception e) {
 			System.out.println(e.toString());
-			return false;
+			throw e;
 		}
 	}
 	

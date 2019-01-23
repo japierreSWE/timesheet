@@ -18,11 +18,17 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
 import com.timesheet.entity.Employee;
+import com.timeshet.db.EmployeeDAO;
 
 public class CreateEmployeeHandler implements RequestStreamHandler {
 	
-	private void addToDatabase(Employee e) throws Exception {
-		//TODO: Add the part where we add it to the database
+	private boolean addToDatabase(Employee e) throws Exception {
+		try{
+			new EmployeeDAO().createEmployee(e);
+			return true;
+		} catch(Exception ex) {
+			return false;
+		}
 	}
 	
     @Override
@@ -98,9 +104,18 @@ public class CreateEmployeeHandler implements RequestStreamHandler {
     		if(!invalidInput) {
     			
     			Employee emp = new Employee(name, address, user, pass, startDate);
+    			boolean added = false;
     			//make employee and try to put it in database
     			try {
-    				addToDatabase(emp);
+    				
+    				if(addToDatabase(emp)) {
+    					httpResponse = new CreateEmployeeResponse(200, emp.getID());
+    	        		jsonResponse.put("body", new Gson().toJson(httpResponse));	
+    				} else {
+    					httpResponse = new CreateEmployeeResponse(400, null);
+                		jsonResponse.put("body", new Gson().toJson(httpResponse));
+    				}
+    				
     			} catch(Exception e) {
     				logger.log("Could not add to database");
     				logger.log(e.toString());
@@ -108,8 +123,7 @@ public class CreateEmployeeHandler implements RequestStreamHandler {
             		jsonResponse.put("body", new Gson().toJson(httpResponse));
     			}
     			
-    			httpResponse = new CreateEmployeeResponse(200, emp.getID());
-        		jsonResponse.put("body", new Gson().toJson(httpResponse));	
+
     		}
     		
     		logger.log("result: " + jsonResponse.toJSONString());
