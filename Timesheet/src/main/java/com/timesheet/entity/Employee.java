@@ -5,13 +5,13 @@ import java.util.UUID;
 
 public class Employee {
 	
-	String name; //name and address
-	String address;
-	String timesheet; //ID of this employee's timesheet
-	String username; //employee's username, password
-	String password;
-	String employeeID; //ID of this account
-	LocalDate periodStart; //date of the 1st period
+	public String name; //name and address
+	public String address;
+	public String timesheet; //ID of this employee's timesheet
+	public String username; //employee's username, password
+	public String password;
+	public String employeeID; //ID of this account
+	public LocalDate periodStart; //date of the 1st period
 	
 	public Employee() { //no-arg
 		
