@@ -7,6 +7,32 @@
 <script>
 
 function createAccount() {
+	var name = document.getElementById("name").value;
+	var address = document.getElementById("address").value;
+	var username = document.getElementById("username").value;
+	var password = document.getElementById("password").value;
+	var periodStart = document.getElementById("periodStart").value;
+	var verify = document.getElementById("verify").value;
+	
+	if(verify != password) {
+		fail("passwordconfirm");
+	}
+	
+}
+
+function fail(cause) {
+	
+	if(cause == "passwordconfirm") {
+		var errorMessage = document.createElement("p");
+		var text = document.createTextNode("The passwords didn't match, please try again");
+		errorMessage.appendChild(text);
+		errorMessage.id = "errorMessage";
+		
+		if(document.getElementById("errorMessage") == null) {
+			document.getElementById("fillout").appendChild(errorMessage);
+		}
+		
+	}
 	
 }
 
@@ -14,11 +40,14 @@ function createAccount() {
 
 <body>
 <h1>Create an employee account</h1>
+<div id="fillout">
 Name: <input type="text" id="name"><br>
 Address: <input type="text" id="address"><br>
 Username: <input type="text" id="username"><br>
-Password: <input type="text" id="password"><br>
+Password: <input type="password" id="password"><br>
+Confirm Password: <input type="password" id="verify"><br>
 Start of your first work period: <input type="date" id="periodStart"><br>
+</div>
 <button onclick="createAccount()">Create your employee account</button>
 </body>
 
