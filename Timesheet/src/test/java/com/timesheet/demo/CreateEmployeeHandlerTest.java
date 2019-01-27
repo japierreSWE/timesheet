@@ -39,7 +39,7 @@ public class CreateEmployeeHandlerTest {
         req.name = "John Doe";
         req.password = "12345";
         req.periodStart = "2001-01-01";
-        req.username = "jdoe";
+        req.username = "jdoe3";
         String jsonRequest = new Gson().toJson(req);
         
         
@@ -64,4 +64,40 @@ public class CreateEmployeeHandlerTest {
         
         Assert.assertEquals(200, resp.httpCode);
     }
+    
+    @Test
+    public void testWrongFormat() throws IOException {
+        CreateEmployeeHandler handler = new CreateEmployeeHandler();
+        
+        CreateEmployeeRequest req = new CreateEmployeeRequest();
+        req.address = "1 Test Ave";
+        req.name = "John Doe";
+        req.password = "12345";
+        req.periodStart = "2001-1-01"; //this should fail because of the wrong format here
+        req.username = "jdoe1";
+        String jsonRequest = new Gson().toJson(req);
+        
+        
+        InputStream input = new ByteArrayInputStream(jsonRequest.getBytes());;
+        OutputStream output = new ByteArrayOutputStream();
+
+        handler.handleRequest(input, output, createContext("random"));
+
+        // TODO: validate output here if needed.
+        String sampleOutputString = output.toString();
+        System.out.println(sampleOutputString);
+        String body = null;
+        try {
+        	JSONParser parser = new JSONParser();
+        	JSONObject jsonResponse = (JSONObject)parser.parse(sampleOutputString);
+        	body = (String)jsonResponse.get("body");
+        } catch(Exception e) {
+        	System.out.println("problem");
+        }
+        
+        CreateEmployeeResponse resp = new Gson().fromJson(body, CreateEmployeeResponse.class);
+        
+        Assert.assertEquals(400, resp.httpCode);
+    }
+    
 }
