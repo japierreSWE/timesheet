@@ -22,19 +22,21 @@ import com.timeshet.db.EmployeeDAO;
 
 public class CreateEmployeeHandler implements RequestStreamHandler {
 	
-	private boolean addToDatabase(Employee e) throws Exception {
+	LambdaLogger logger = null;
+	
+	private int addToDatabase(Employee e) {
 		try{
-			new EmployeeDAO().createEmployee(e);
-			return true;
+			return new EmployeeDAO().createEmployee(e);
 		} catch(Exception ex) {
-			return false;
+			logger.log("Couldn't add to database");
+			return 400;
 		}
 	}
 	
     @Override
     public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 
-        LambdaLogger logger = context.getLogger();
+        logger = context.getLogger();
         logger.log("Creating employee");
         JSONObject headerJson = new JSONObject();
         headerJson.put("Content-Type",  "application/json");
@@ -108,11 +110,13 @@ public class CreateEmployeeHandler implements RequestStreamHandler {
     			//make employee and try to put it in database
     			try {
     				
-    				if(addToDatabase(emp)) {
-    					httpResponse = new CreateEmployeeResponse(200, emp.getID());
+    				int code = addToDatabase(emp);
+    				
+    				if(code == 200) {
+    					httpResponse = new CreateEmployeeResponse(code, emp.getID());
     	        		jsonResponse.put("body", new Gson().toJson(httpResponse));	
     				} else {
-    					httpResponse = new CreateEmployeeResponse(400, null);
+    					httpResponse = new CreateEmployeeResponse(code, null);
                 		jsonResponse.put("body", new Gson().toJson(httpResponse));
     				}
     				
