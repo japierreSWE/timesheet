@@ -6,6 +6,8 @@
 
 <script>
 
+var url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/employee";
+
 function createAccount() {
 	var name = document.getElementById("name").value;
 	var address = document.getElementById("address").value;
@@ -16,6 +18,52 @@ function createAccount() {
 	
 	if(verify != password) {
 		fail("passwordconfirm");
+		return;
+	}
+	
+	var data = {}; //to store json request
+	data["name"] = name;
+	data["address"] = address;
+	data["username"] = username;
+	data["password"] = password;
+	data["periodStart"] = periodStart;
+	data["verify"] = verify;
+	
+	var json = JSON.stringify(data);
+	console.log("JS: " + json);
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true); //form post request
+	
+	xhr.send(json); //send the json to the url.
+	
+	xhr.onloadend = function() {
+		
+		console.log(xhr);
+		console.log(xhr.request);
+		
+		if(xhr.readyState == XMLHttpRequest.DONE) {
+			console.log("Response was: " + xhr.responseText);
+			processResponse(xhr.responseText);
+		} else {
+			processResponse(null);
+		}
+		
+	};
+	
+}
+
+function processResponse(responseText) {
+	if(responseText == null) { return; }
+	
+	var response = JSON.parse(responseText);
+	
+	if(response.httpCode == 200) {
+		window.location = "accountConfirm.html";
+	} else if(response.httpCode == 400) {
+		fail("db");
+	} else if(response.httpCode == 430) {
+		fail("sameusername");
 	}
 	
 }
@@ -23,19 +71,28 @@ function createAccount() {
 function fail(cause) {
 	
 	if(cause == "passwordconfirm") {
+		
+		createError("The passwords didn't match, please try again");
+		
+	} else if(cause == "db") {
+		createError("There was a database issue. Please try again");
+	} else if(cause = "sameusername") {
+		createError("There's already a user with that username. Please pick a different username.");
+	}
+}
+	
+function createError(content) {
+	if(document.getElementById("errorMessage") == null) {
 		var errorMessage = document.createElement("p");
-		var text = document.createTextNode("The passwords didn't match, please try again");
+		var text = document.createTextNode(content);
 		errorMessage.appendChild(text);
 		errorMessage.id = "errorMessage";
+		document.getElementById("fillout").appendChild(errorMessage);
 		
-		if(document.getElementById("errorMessage") == null) {
-			document.getElementById("fillout").appendChild(errorMessage);
-		}
-		
+	} else {
+		document.getElementById("errorMessage").textContent = content;
 	}
-	
 }
-
 </script>
 
 <body>
