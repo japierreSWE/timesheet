@@ -78,13 +78,11 @@ public class CreateClientHandler implements RequestStreamHandler {
         
      	if(!processed) {
      		CreateClientRequest request = new Gson().fromJson(httpBody, CreateClientRequest.class);
-     		String username = request.username;
-     		String password = request.password;
      		String manager = request.manager;
      		String name = request.name;
      		String position = request.position;
      		
-     		Client cl = new Client(username, password, manager, name, position);
+     		Client cl = new Client(manager, name, position);
      		int code = addToDatabase(cl);
      		httpResponse = new CreateClientResponse(code);
      		jsonResponse.put("body", new Gson().toJson(httpResponse));
