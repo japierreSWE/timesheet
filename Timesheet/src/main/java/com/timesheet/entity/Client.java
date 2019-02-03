@@ -13,4 +13,16 @@ public class Client {
 		this.position = position;
 	}
 	
+	public String getManager() {
+		return manager;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getPosition() {
+		return position;
+	}
+	
 }

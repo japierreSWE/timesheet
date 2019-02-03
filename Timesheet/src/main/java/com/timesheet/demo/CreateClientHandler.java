@@ -16,14 +16,18 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
 import com.timesheet.entity.Client;
+import com.timeshet.db.ClientDAO;
 
 public class CreateClientHandler implements RequestStreamHandler {
 	
 	LambdaLogger logger = null;
 	
 	private int addToDatabase(Client cl) {
-		//section here where we use a DAO
-		return 0;
+		try {
+			return new ClientDAO().createClient(cl);
+		} catch(Exception e) {
+			return 400;
+		}
 	}
 	
     @Override
