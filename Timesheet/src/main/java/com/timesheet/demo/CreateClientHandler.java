@@ -47,7 +47,7 @@ public class CreateClientHandler implements RequestStreamHandler {
      	
      	CreateClientResponse httpResponse = null;
      	String httpBody = null;
-     	boolean processed = true;
+     	boolean processed = false;
      	
      	try {
      		//parse request

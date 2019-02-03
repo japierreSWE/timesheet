@@ -4,9 +4,9 @@ public class CreateEmployeeResponse {
 	int httpCode;
 	String ID;
 	
-	public CreateEmployeeResponse(int code, String id) {
+	public CreateEmployeeResponse(int code, String ID) {
 		httpCode = code;
-		ID = id;
+		this.ID = ID;
 	}
 	
 }
