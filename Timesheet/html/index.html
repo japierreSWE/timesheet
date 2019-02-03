@@ -8,7 +8,11 @@
 <script>
 
 function toEmployee() {
-	window.location = "employeeCreate.html"
+	window.location = "employeeCreate.html";
+}
+
+function toClient() {
+	window.location = "clientCreate.html";
 }
 
 </script>
@@ -24,7 +28,7 @@ function toEmployee() {
 <br>
 <h2>Create an account</h2>
 <button type=button onclick="toEmployee()">Create an employee account</button><br>
-<button type=button>Create a client account</button>
+<button type=button onclick="toClient()">Create a client account</button>
 </body>
 
 </html>

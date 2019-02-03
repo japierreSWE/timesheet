@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Create a client</title>
+</head>
+
+<script>
+
+var url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/client";
+
+function processResponse(text) {
+	
+	var response = JSON.parse(text);
+	
+	if(response.httpCode == 200) {
+		window.location = "accountConfirm.html"
+	} else {
+		
+		if(document.getElementById("error") == null) {
+			var errorMessage = document.createElement("p");
+			var text = document.createTextNode("There was a server issue. Please try again.");
+			errorMessage.appendChild(text);
+			errorMessage.id = "error";
+			document.getElementById("fillout").appendChild(errorMessage);
+		}
+		
+	}
+	
+}
+
+function createClient() {
+	var data = {};
+	data["name"] = document.getElementById("name").value;
+	data["position"] = document.getElementById("position").value;
+	data["manager"] = document.getElementById("manager").value; //store all data needed
+	
+	var json = JSON.stringify(data);
+	console.log("JS: " + json); //turn it into a json string
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true); //make a post request to the url and send the json to it
+	xhr.send(json);
+	
+	xhr.onloadend = function() {
+		console.log(xhr);
+		console.log(xhr.request);
+		
+		if(xhr.readyState == XMLHttpRequest.DONE) {
+			console.log("Response was " + xhr.responseText);
+			processResponse(xhr.responseText);
+		} else {
+			processResponse(null);
+		}
+		
+	};
+	
+}
+
+</script>
+
+<body>
+<div id="fillout">
+<h1>Create a client</h1>
+Name: <input type="text" id="name"><br>
+Position: <input type="text" id="position"><br>
+Manager: <input type="text" id="manager"><br>
+</div>
+<button onclick="createClient()">Create client</button>
+</body>
+
+</html>
