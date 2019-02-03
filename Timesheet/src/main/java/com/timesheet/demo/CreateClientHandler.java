@@ -43,7 +43,7 @@ public class CreateClientHandler implements RequestStreamHandler {
      	headerJson.put("Access-Control-Allow-Headers", "*");
      	
      	JSONObject jsonResponse = new JSONObject(); //json object containing response
-     	jsonResponse.put("headers", headerJson);
+     	jsonResponse.put("headers", headerJson); //put headers in it
      	
      	CreateClientResponse httpResponse = null;
      	String httpBody = null;
@@ -65,7 +65,7 @@ public class CreateClientHandler implements RequestStreamHandler {
      			httpResponse = new CreateClientResponse(200);
      			jsonResponse.put("body", new Gson().toJson(httpResponse));
      			processed = true;
-     		} else {
+     		} else { //store the body to use later
      			httpBody = (String)jsonRequest.get("body");
      			if(httpBody == null) {
      				httpBody = jsonRequest.toJSONString();
@@ -80,7 +80,7 @@ public class CreateClientHandler implements RequestStreamHandler {
      		processed = true;
      	}
         
-     	if(!processed) {
+     	if(!processed) { //extract info from request then add to database
      		CreateClientRequest request = new Gson().fromJson(httpBody, CreateClientRequest.class);
      		String manager = request.manager;
      		String name = request.name;
