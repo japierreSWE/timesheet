@@ -18,7 +18,7 @@ public class Employee {
 	}
 	
 	public Employee(String name, String address, String username, String password, LocalDate start) {
-		
+		//for creating a new employee
 		this.name = name;
 		this.address = address;
 		this.username = username;
@@ -26,6 +26,17 @@ public class Employee {
 		this.employeeID = UUID.randomUUID().toString();
 		this.timesheet = null; //employee doesn't have a timesheet yet
 		this.periodStart = start;
+	}
+	
+	public Employee(String employeeID, String name, String address, String timesheet, String username, String password, LocalDate periodStart) {
+		//for retrieving from db
+		this.employeeID = employeeID;
+		this.name = name;
+		this.address = address;
+		this.timesheet = timesheet;
+		this.username = username;
+		this.password = password;
+		this.periodStart = periodStart;
 	}
 	
 	public String getID() {
