@@ -7,6 +7,9 @@
 
 <script>
 
+var login_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/login";
+//url to api gateway
+
 function toEmployee() {
 	window.location = "employeeCreate.html";
 }
@@ -15,15 +18,76 @@ function toClient() {
 	window.location = "clientCreate.html";
 }
 
+function login() {
+	var data = {}; //stores json request
+	data["username"] = document.getElementById("username").value;
+	data["password"] = document.getElementById("password").value;
+	
+	var json = JSON.stringify(data); //turn into json string
+	console.log("JS: " + json);
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", login_url, true);
+	xhr.send(json); //send json to the url
+	
+	xhr.onloadend = function() {
+		
+		console.log(xhr.request);
+		
+		if(xhr.readyState == XMLHttpRequest.DONE) {
+			console.log("Response was: " + xhr.responseText);
+			processResponse(xhr.responseText);
+		} else {
+			processRepsonse(null);
+		}
+		
+	};
+	
+}
+
+function processResponse(responseText) {
+	if(responseText == null) { return; }
+	
+	var response = JSON.parse(responseText);
+	
+	if(response.httpCode == 200) {
+		var test = document.createElement("p");
+		test.appendChild(document.createTextNode("Success"));
+		document.getElementById("login").appendChild(test);
+	} else if(response.httpCode == 430) {
+		createError("Wrong username/password.")
+	} else if(repsonse.httpCode == 400) {
+		createError("Internal error. Please try again.")
+	}
+	 
+}
+
+function createError(text) {
+	
+	if(document.getElementById("errorMessage") == null) { //if there is no error message, create one
+		
+		var error = document.createElement("p");
+		error.appendChild(document.createTextNode(text));
+		error.id = "errorMessage";
+		document.getElementById("login").appendChild(error);
+		
+	} else {
+		document.getElementById("errorMessage").value = text;
+	}
+	
+}
+
 </script>
 
 <body>
+<div id="login">
 <h2>Log into your account</h2>
 <p>Username:</p>
 <input type="text" id="username"><br>
 <p>Password:</p>
 <input type="text" id="password"><br>
-<button type=button>Log in</button><br>
+<button type=button onclick="login()">Log in</button><br>
+</div>
 <!-- Login stuff -->
 <br>
 <h2>Create an account</h2>

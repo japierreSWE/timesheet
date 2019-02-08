@@ -9,7 +9,7 @@ public class LoginResponse {
 	
 	public LoginResponse(int code, Employee e) {
 		httpCode = code;
-		e = employee;
+		employee = e;
 	}
 	
 }
