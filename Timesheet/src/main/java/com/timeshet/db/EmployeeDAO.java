@@ -46,7 +46,7 @@ public class EmployeeDAO extends DAO {
 		
 		try {
 			//find an employee with the corresponding user and password
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND password = ?);");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND password = ?");
 			ps.setString(1, user);
 			ps.setString(2, pass);
 			ResultSet results = ps.executeQuery();
@@ -67,7 +67,7 @@ public class EmployeeDAO extends DAO {
 		
 		try {
 			//find an employee with the corresponding user and password
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND password = ?);");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND password = ?");
 			ps.setString(1, user);
 			ps.setString(2, pass);
 			ResultSet results = ps.executeQuery();

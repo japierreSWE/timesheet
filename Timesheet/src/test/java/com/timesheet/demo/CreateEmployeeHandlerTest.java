@@ -43,7 +43,7 @@ public class CreateEmployeeHandlerTest {
         String jsonRequest = new Gson().toJson(req);
         
         
-        InputStream input = new ByteArrayInputStream(jsonRequest.getBytes());;
+        InputStream input = new ByteArrayInputStream(jsonRequest.getBytes());
         OutputStream output = new ByteArrayOutputStream();
 
         handler.handleRequest(input, output, createContext("random"));
