@@ -30,7 +30,7 @@ function login() {
 	xhr.open("POST", login_url, true);
 	xhr.send(json); //send json to the url
 	
-	xhr.onloadend = function() {
+	xhr.onloadend = function() {//
 		
 		console.log(xhr.request);
 		
