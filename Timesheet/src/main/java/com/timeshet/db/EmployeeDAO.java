@@ -12,6 +12,7 @@ public class EmployeeDAO extends DAO {
 		super();
 	}
 	
+	//puts an employee in the db and returns the corresponding http code
 	public int createEmployee(Employee emp) throws Exception {
 		
 		try {
@@ -41,7 +42,7 @@ public class EmployeeDAO extends DAO {
 	}
 	
 	//verifies that an account exists with this username and password and
-	//returns the corresponding 4xx code.
+	//returns the corresponding http code.
 	public int verify(String user, String pass) throws Exception {
 		
 		try {
