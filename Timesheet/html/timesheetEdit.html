@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Timesheet Edit</title>
+</head>
+
+<script src="https://code.jquery.com/jquery-1.9.1.min.js">
+
+var client_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/client";
+var clients = null;
+
+function preparePage() {
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", client_url, true);
+	var json = JSON.stringify(""); //don't need anything
+	xhr.send(json);
+	
+	xhr.onloadend = function() {
+		console.log(xhr.responseText);
+		if(xhr.readyState == XMLHttpRequest.DONE) {
+			processResponse(xhr.responseText);
+		} else {
+			processResponse(null);
+		}
+		
+	};
+	
+}
+
+function responseText(text) {
+	var resp = JSON.parse(text);
+	clients = resp.clients;
+}
+
+$(document).ready(preparePage);
+
+</script>
+
+</html>
