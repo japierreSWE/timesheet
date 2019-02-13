@@ -57,7 +57,29 @@ function showData() {
 	//find a client that has the same name as the one chosen
 	//in the dropdown, then put the manager and position in the
 	//appropiate elements
+	var current = document.getElementById("clientDropdown").value;
+	var client = search(current);
 	
+	if(client != null) {
+		document.getElementById("manager").textContent = client.manager;
+		document.getElementById("position").textContent = client.position;
+	} else {
+		document.getElementById("manager").textContent = "";
+		document.getElementById("position").textContent = "";
+	}
+	
+	
+}
+
+//searches clients for the name and returns the client or null if not found
+function search(str) {
+	
+	for(i = 0; i<clients.length; i++) {
+		if(clients[i].name == str) {
+			return clients[i];
+		}
+	}
+	return null;
 }
 
 $(document).ready(preparePage); //use jquery to prepare the dropdown when the page has loaded
@@ -66,8 +88,11 @@ $(document).ready(preparePage); //use jquery to prepare the dropdown when the pa
 </head>
 
 <body>
+Work Title: <input type="text" id="workTitle"><br>
 <select id="clientDropdown" onchange="showData()">
 </select>
+<p id="manager"></p>
+<p id="position"></p>
 </body>
 
 </html>
