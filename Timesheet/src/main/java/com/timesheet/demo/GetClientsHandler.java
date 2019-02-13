@@ -16,6 +16,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
+import com.timesheet.entity.Client;
 import com.timeshet.db.ClientDAO;
 
 public class GetClientsHandler implements RequestStreamHandler {
@@ -23,7 +24,7 @@ public class GetClientsHandler implements RequestStreamHandler {
 	LambdaLogger logger = null;
 	
 	//returns the clients' names obtained from db. returns null if failed.
-	public ArrayList<String> retrieveClients() {
+	public ArrayList<Client> retrieveClients() {
 		
 		try {
 			return new ClientDAO().retrieveClients();
@@ -69,7 +70,7 @@ public class GetClientsHandler implements RequestStreamHandler {
     	}
     	
     	if(!processed) {
-    		ArrayList<String> clients = retrieveClients();
+    		ArrayList<Client> clients = retrieveClients();
     		
     		if(clients == null) {
     			response = new GetClientsResponse(400, null);

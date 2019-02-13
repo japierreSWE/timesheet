@@ -29,10 +29,10 @@ public class ClientDAO extends DAO {
 		}
 		
 	}
-	//gets all clients' names from the db
-	public ArrayList<String> retrieveClients() throws Exception {
+	//gets all clients from the db
+	public ArrayList<Client> retrieveClients() throws Exception {
 		
-		ArrayList<String> arr = new ArrayList<String>();
+		ArrayList<Client> arr = new ArrayList<Client>();
 		
 		try {
 			
@@ -40,7 +40,8 @@ public class ClientDAO extends DAO {
 			ResultSet results = ps.executeQuery();
 			
 			while(results.next()) {
-				arr.add(results.getString("name"));
+				Client c = new Client(results.getString("manager"), results.getString("name"), results.getString("position"));
+				arr.add(c);
 			} //get all names and add them to arraylist
 			
 		} catch(Exception e) {

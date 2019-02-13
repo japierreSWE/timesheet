@@ -3,10 +3,11 @@
 
 <head>
 <title>Timesheet Edit</title>
-</head>
 
-<script src="https://code.jquery.com/jquery-1.9.1.min.js">
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
 var client_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/client";
 var clients = null;
 
@@ -28,13 +29,45 @@ function preparePage() {
 	
 }
 
-function responseText(text) {
+function processResponse(text) {
 	var resp = JSON.parse(text);
+	
+	if(resp.httpCode == 400) {
+		alert("There was an internal error. Please try logging in again.");
+	}
+	
 	clients = resp.clients;
+	
+	var first = document.createElement("option");
+	first.appendChild(document.createTextNode("--Select a client--"));
+	document.getElementById("clientDropdown").appendChild(first);
+	
+	for(i = 0; i<clients.length; i++) {
+		//add all clients' names from the response
+		var option = document.createElement("option");
+		option.appendChild(document.createTextNode(clients[i].name));
+		document.getElementById("clientDropdown").appendChild(option);
+		
+	}
+	
 }
 
-$(document).ready(preparePage);
+function showData() {
+	
+	//find a client that has the same name as the one chosen
+	//in the dropdown, then put the manager and position in the
+	//appropiate elements
+	
+}
+
+$(document).ready(preparePage); //use jquery to prepare the dropdown when the page has loaded
 
 </script>
+</head>
+
+<body>
+<select id="clientDropdown" onchange="showData()">
+</select>
+</body>
 
 </html>
