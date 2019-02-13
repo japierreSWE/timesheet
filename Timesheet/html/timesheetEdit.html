@@ -4,12 +4,22 @@
 <head>
 <title>Timesheet Edit</title>
 
+<style>
+	p {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+</style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
 var client_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/client";
 var clients = null;
+var employee = JSON.parse(sessionStorage.getItem("employee"));
 
 function preparePage() {
 	var xhr = new XMLHttpRequest();
@@ -50,6 +60,9 @@ function processResponse(text) {
 		
 	}
 	
+	document.getElementById("name").textContent = employee.name;
+	document.getElementById("address").textContent = employee.address;
+	
 }
 
 function showData() {
@@ -89,8 +102,10 @@ $(document).ready(preparePage); //use jquery to prepare the dropdown when the pa
 
 <body>
 Work Title: <input type="text" id="workTitle"><br>
-<select id="clientDropdown" onchange="showData()">
-</select>
+Completed for client: <select id="clientDropdown" onchange="showData()">
+</select><br>
+Name: <p id="name"></p><br>
+Address: <p id="address"></p><br>
 <p id="manager"></p>
 <p id="position"></p>
 </body>

@@ -51,10 +51,7 @@ function processResponse(responseText) {
 	var response = JSON.parse(responseText);
 	
 	if(response.httpCode == 200) {
-		//var test = document.createElement("p");
-		//test.appendChild(document.createTextNode("Success"));
-		//document.getElementById("login").appendChild(test);
-		sessionStorage.setItem("employee", response.employee);
+		sessionStorage.setItem("employee", JSON.stringify(response.employee));
 		window.location = "timesheetEdit.html";
 	} else if(response.httpCode == 430) {
 		createError("Wrong username/password.")
