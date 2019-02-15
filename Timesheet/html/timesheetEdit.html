@@ -20,6 +20,8 @@
 var client_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/client";
 var clients = null;
 var employee = JSON.parse(sessionStorage.getItem("employee"));
+var count = 1;
+var rows = [];
 
 function preparePage() {
 	var xhr = new XMLHttpRequest();
@@ -95,6 +97,43 @@ function search(str) {
 	return null;
 }
 
+//updates the time spent and the total time
+function updateTimes(element) {
+	var id = element.id;
+	var rowNum = parseInt(id.charAt(id.length-1)); //get the last character of the id(which is a number) and turn it to int
+	
+	var startEle = document.getElementById("start" + String(rowNum));
+	var endEle = document.getElementById("end" + String(rowNum));
+	
+	if(startEle.value == "" || endEle.value == "") { //if there isn't input in either of them, do nothing
+		return;
+	} else {
+		
+		startArr = convertTime(startEle.value);
+		endArr = convertTime(endEle.value);
+		startMinutes = startArr[0]*60 + startArr[1];
+		endMinutes = endArr[0]*60 + endArr[1];
+		diff = (endMinutes - startMinutes) / 60.0;
+		
+		if(diff < 0) { //end time was less than start time
+			document.getElementById("time" + String(rowNum)).textContent = "Error: End time is before start time";
+			return;
+		} else {
+			document.getElementById("time" + String(rowNum)).textContent = diff.toFixed(2) + " hours";
+		}
+		
+	}
+	
+}
+
+//converts a time string into numbers
+function convertTime(timeStr) {
+	var arr = timeStr.split(":");
+	arr[0] = parseInt(arr[0]);
+	arr[1] = parseInt(arr[1]);
+	return arr;
+}
+
 $(document).ready(preparePage); //use jquery to prepare the dropdown when the page has loaded
 
 </script>
@@ -108,6 +147,15 @@ Name: <p id="name"></p><br>
 Address: <p id="address"></p><br>
 <p id="manager"></p>
 <p id="position"></p>
+<br>
+<h3>Timesheet</h3>
+<div id=rows>
+	<div id="row1">
+		<p>Date: </p><input type="date" id="date1"> <p>Start Time: </p><input type="time" id="start1" onchange="updateTimes(this)">
+		<p>End Time: </p><input type="time" id="end1" onchange="updateTimes(this)"> <p>Comments: </p><input type="text" id="comments1">
+		<p>Time spent: </p><p id="time1"></p>
+	</div>
+</div>
 </body>
 
 </html>
