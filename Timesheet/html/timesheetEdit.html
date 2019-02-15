@@ -125,6 +125,19 @@ function updateTimes(element) {
 		
 	}
 	
+	//update total time
+	var total = 0.0;
+	
+	for(i = 0; i< hoursArr.length; i++) {
+		
+		if(hoursArr[i] != null) {
+			total = total + hoursArr[i];
+		}
+		
+	}
+	
+	document.getElementById("total").textContent = total.toFixed(2);
+	
 }
 
 //converts a time string into numbers
@@ -194,6 +207,48 @@ function addP(ele, text) {
 //removes the last row from the timesheet
 function deleteRow() {
 	
+	if(count == 1) { //timesheet should have at least 1 row
+		return;
+	}
+	
+	var rows = document.getElementById("rows");
+	rows.removeChild(document.getElementById("row" + String(count)));
+	--count;
+	hoursArr.pop();
+	
+}
+
+//prepares a timesheet to send via JSON and returns it
+function prepareTimesheet() {
+	
+	if(hoursArr.length < count) { //this means that times haven't been entered in each row
+		return null;
+	}
+	
+	timesheet = {};
+	rows = [];
+	
+	for(i = 0; i<hoursArr.length; i++) {
+		
+		row = {};
+		rowNum = String(i+1);
+		row["date"] = document.getElementById("date" + rowNum).value;
+		row["startTime"] = document.getElementById("start" + rowNum).value;
+		row["endTime"] = document.getElementById("end" + rowNum).value;
+		row["comments"] = document.getElementById("comments" + rowNum).value;
+		rows.push(row);
+		
+	}
+	
+	timesheet["rows"] = rows;
+	return timesheet;
+	
+}
+
+//submits timesheet. sends it to db
+function submit() {
+	var timesheet = prepareTimesheet();
+	console.log(JSON.stringify(timesheet));
 }
 
 $(document).ready(preparePage); //use jquery to prepare the dropdown when the page has loaded
@@ -211,6 +266,7 @@ Manager: <p id="manager"></p><br>
 Position: <p id="position"></p>
 <br>
 <h3>Timesheet</h3>
+Total hours worked: <p id="total"></p>
 <div id=rows>
 	<div id="row1">
 		<p>Date: </p><input type="date" id="date1"> <p>Start Time: </p><input type="time" id="start1" onchange="updateTimes(this)">
@@ -218,7 +274,8 @@ Position: <p id="position"></p>
 		<p>Time Spent: </p><p id="time1"></p>
 	</div>
 </div><br>
-<button onclick="addRow()">Add Row</button> <button onclick="deleteRow()">Delete Row</button>
+<button onclick="addRow()">Add Row</button> <button onclick="deleteRow()">Delete Row</button><br>
+<button onclick="submit()">Submit Timesheet</button>
 </body>
 
 </html>
