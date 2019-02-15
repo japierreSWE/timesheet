@@ -21,7 +21,7 @@ var client_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/c
 var clients = null;
 var employee = JSON.parse(sessionStorage.getItem("employee"));
 var count = 1;
-var rows = [];
+var hoursArr = [];
 
 function preparePage() {
 	var xhr = new XMLHttpRequest();
@@ -86,7 +86,7 @@ function showData() {
 	
 }
 
-//searches clients for the name and returns the client or null if not found
+//searches clients for the client's name passed and returns the client or null if not found
 function search(str) {
 	
 	for(i = 0; i<clients.length; i++) {
@@ -109,18 +109,19 @@ function updateTimes(element) {
 		return;
 	} else {
 		
-		startArr = convertTime(startEle.value);
-		endArr = convertTime(endEle.value);
-		startMinutes = startArr[0]*60 + startArr[1];
-		endMinutes = endArr[0]*60 + endArr[1];
-		diff = (endMinutes - startMinutes) / 60.0;
+		var startArr = convertTime(startEle.value);
+		var endArr = convertTime(endEle.value);
+		var startMinutes = startArr[0]*60 + startArr[1];
+		var endMinutes = endArr[0]*60 + endArr[1];
+		var diff = (endMinutes - startMinutes) / 60.0;
 		
 		if(diff < 0) { //end time was less than start time
 			document.getElementById("time" + String(rowNum)).textContent = "Error: End time is before start time";
-			return;
 		} else {
 			document.getElementById("time" + String(rowNum)).textContent = diff.toFixed(2) + " hours";
 		}
+		
+		hoursArr[rowNum-1] = diff;
 		
 	}
 	
@@ -134,6 +135,67 @@ function convertTime(timeStr) {
 	return arr;
 }
 
+//adds a row to the timesheet
+function addRow() {
+	++count;
+	var rowNum = String(count);
+	var nextRow = document.createElement("div");
+	nextRow.id = "row" + rowNum;
+	
+	//add Date p
+	addP(nextRow, "Date: ");
+	//add date input w/ id
+	var dateInput = document.createElement("input");
+	dateInput.type = "date";
+	dateInput.id = "date" + rowNum;
+	nextRow.appendChild(dateInput);
+	//add start time p
+	addP(nextRow, "Start Time: ");
+	//add time input w/ id and onchange
+	var startInput = document.createElement("input");
+	startInput.type = "time";
+	startInput.id = "start" + rowNum;
+	startInput.onchange = function() {updateTimes(startInput)};
+	nextRow.appendChild(startInput);
+	//add end time p
+	addP(nextRow, "End Time: ");
+	//add time input with id and onchange
+	var endInput = document.createElement("input");
+	endInput.type = "time";
+	endInput.id = "end" + rowNum;
+	endInput.onchange = function() {updateTimes(endInput)};
+	nextRow.appendChild(endInput);
+	//add comments p
+	addP(nextRow, "Comments: ");
+	//add text input with id
+	var comInput = document.createElement("input");
+	comInput.type = "text";
+	comInput.id = "comments" + rowNum;
+	nextRow.appendChild(comInput);
+	//add time spent p
+	addP(nextRow, "Time Spent: ");
+	//add p with id
+	var spent = document.createElement("p");
+	spent.id = "time" + rowNum;
+	nextRow.appendChild(spent);
+	
+	
+	document.getElementById("rows").appendChild(nextRow);
+	
+}
+
+//adds a paragraph to an element
+function addP(ele, text) {
+	var p = document.createElement("p");
+	p.appendChild(document.createTextNode(text));
+	ele.appendChild(p);
+}
+
+//removes the last row from the timesheet
+function deleteRow() {
+	
+}
+
 $(document).ready(preparePage); //use jquery to prepare the dropdown when the page has loaded
 
 </script>
@@ -145,17 +207,18 @@ Completed for client: <select id="clientDropdown" onchange="showData()">
 </select><br>
 Name: <p id="name"></p><br>
 Address: <p id="address"></p><br>
-<p id="manager"></p>
-<p id="position"></p>
+Manager: <p id="manager"></p><br>
+Position: <p id="position"></p>
 <br>
 <h3>Timesheet</h3>
 <div id=rows>
 	<div id="row1">
 		<p>Date: </p><input type="date" id="date1"> <p>Start Time: </p><input type="time" id="start1" onchange="updateTimes(this)">
 		<p>End Time: </p><input type="time" id="end1" onchange="updateTimes(this)"> <p>Comments: </p><input type="text" id="comments1">
-		<p>Time spent: </p><p id="time1"></p>
+		<p>Time Spent: </p><p id="time1"></p>
 	</div>
-</div>
+</div><br>
+<button onclick="addRow()">Add Row</button> <button onclick="deleteRow()">Delete Row</button>
 </body>
 
 </html>
