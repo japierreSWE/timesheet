@@ -22,4 +22,24 @@ public class Timesheet {
 		this.rows = rows;
 	}
 	
+	public String getEmployee() {
+		return employee;
+	}
+	
+	public String getID() {
+		return timesheetID;
+	}
+	
+	public String getWorkTitle() {
+		return workTitle;
+	}
+	
+	public String getClient() {
+		return clientName;
+	}
+	
+	public Row[] getRows() {
+		return rows;
+	}
+	
 }

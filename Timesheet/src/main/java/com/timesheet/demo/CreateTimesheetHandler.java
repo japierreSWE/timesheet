@@ -17,13 +17,19 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.google.gson.Gson;
 import com.timesheet.entity.Row;
 import com.timesheet.entity.Timesheet;
+import com.timeshet.db.TimesheetDAO;
 
 public class CreateTimesheetHandler implements RequestStreamHandler {
 	
 	LambdaLogger logger = null;
 	
 	private int addTimesheetToDatabase(Timesheet ts) {
-		return 0;
+		try {
+			return new TimesheetDAO().createTimesheet(ts);
+		} catch(Exception e) {
+			logger.log(e.toString());
+			return 400;
+		}
 	}
 	
     @Override
