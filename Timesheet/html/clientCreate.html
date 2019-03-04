@@ -15,6 +15,18 @@ function processResponse(text) {
 	
 	if(response.httpCode == 200) {
 		window.location = "accountConfirm.html"
+	} else if(response.httpCode == 430) {
+		
+		if(document.getElementById("error") == null) {
+			var errorMessage = document.createElement("p");
+			var text = document.createTextNode("There is already a client with that name.");
+			errorMessage.appendChild(text);
+			errorMessage.id = "error";
+			document.getElementById("fillout").appendChild(errorMessage);
+		} else { //if the error message element already exists, replace its text
+			document.getElementById("error").textContent = "There is already a client with that name.";
+		}
+		
 	} else {
 		
 		if(document.getElementById("error") == null) {
@@ -23,6 +35,8 @@ function processResponse(text) {
 			errorMessage.appendChild(text);
 			errorMessage.id = "error";
 			document.getElementById("fillout").appendChild(errorMessage);
+		} else { //if the error message element already exists, replace its text
+			document.getElementById("error").textContent = "There was a server issue. Please try again.";
 		}
 		
 	}
