@@ -252,6 +252,8 @@ function prepareTimesheet() {
 function submit() {
 	var timesheet = prepareTimesheet();
 	timesheet["employeeID"] = employee.employeeID;
+	timesheet["clientName"] = document.getElementById("clientDropdown").value;
+	timesheet["workTitle"] = document.getElementById("workTitle").value;
 	console.log(JSON.stringify(timesheet));
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", timesheet_url, true);
@@ -288,7 +290,7 @@ function processTimesheetResponse(text) {
 			var errorMessage = document.createElement("p");
 			errorMessage.appendChild(document.createTextNode("Internal error. Please try again later."));
 			errorMessage.id = "error";
-			document.appendChild(errorMessage);
+			document.getElementById("message").appendChild(errorMessage);
 		} else {
 			document.getElementById("error").textContent = "Internal error. Please try again later.";
 		}
@@ -322,6 +324,7 @@ Total hours worked: <p id="total"></p>
 </div><br>
 <button onclick="addRow()">Add Row</button> <button onclick="deleteRow()">Delete Row</button><br>
 <button onclick="submit()">Submit Timesheet</button>
+<div id="message"></div>
 </body>
 
 </html>
