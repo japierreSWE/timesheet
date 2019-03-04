@@ -18,6 +18,7 @@
 
 <script>
 var client_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/client";
+var timesheet_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/timesheet";
 var clients = null;
 var employee = JSON.parse(sessionStorage.getItem("employee"));
 var count = 1;
@@ -26,7 +27,7 @@ var hoursArr = [];
 function preparePage() {
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", client_url, true);
-	var json = JSON.stringify(""); //don't need anything
+	var json = JSON.stringify(""); //don't need anything in a GET request
 	xhr.send(json);
 	
 	xhr.onloadend = function() {
@@ -46,6 +47,7 @@ function processResponse(text) {
 	
 	if(resp.httpCode == 400) {
 		alert("There was an internal error. Please try logging in again.");
+		window.location = "index.html";
 	}
 	
 	clients = resp.clients;
@@ -67,6 +69,7 @@ function processResponse(text) {
 	
 }
 
+//shows a client's data when selected
 function showData() {
 	
 	//find a client that has the same name as the one chosen
@@ -249,7 +252,43 @@ function prepareTimesheet() {
 function submit() {
 	var timesheet = prepareTimesheet();
 	console.log(JSON.stringify(timesheet));
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", timesheet_url, true);
+	var json = JSON.stringify(timesheet);
+	xhr.send(json);
+	//send json string to timesheet API
+	
+	xhr.onloadend = function() {
+		
+		console.log(xhr.responseText);
+		if(xhr.readyState == XMLHttpRequest.DONE) {
+			processTimesheetResponse(xhr.responseText);
+		} else {
+			processTimesheetResponse(null);
+		}
+		
+	};
+	
 }
+
+//process response from timesheet API
+function processTimesheetResponse(text) {
+	
+	if(text == null) {
+		return;
+	}
+	
+	var resp = JSON.parse(text);
+	
+	if(resp.httpCode == 200) {
+		window.location = "timesheetConfirm.html";
+	} else {
+		var errorMessage = document.createElement("p");
+		errorMessage.appendChild(document.createTextNode("Internal error. Please try again later."));
+	}
+	
+}
+
 
 $(document).ready(preparePage); //use jquery to prepare the dropdown when the page has loaded
 
