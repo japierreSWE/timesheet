@@ -251,6 +251,7 @@ function prepareTimesheet() {
 //submits timesheet. sends it to db
 function submit() {
 	var timesheet = prepareTimesheet();
+	timesheet["employeeID"] = employee.employeeID;
 	console.log(JSON.stringify(timesheet));
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", timesheet_url, true);
@@ -283,8 +284,14 @@ function processTimesheetResponse(text) {
 	if(resp.httpCode == 200) {
 		window.location = "timesheetConfirm.html";
 	} else {
-		var errorMessage = document.createElement("p");
-		errorMessage.appendChild(document.createTextNode("Internal error. Please try again later."));
+		if(document.getElementById("error") == null) {
+			var errorMessage = document.createElement("p");
+			errorMessage.appendChild(document.createTextNode("Internal error. Please try again later."));
+			errorMessage.id = "error";
+			document.appendChild(errorMessage);
+		} else {
+			document.getElementById("error").textContent = "Internal error. Please try again later.";
+		}
 	}
 	
 }
