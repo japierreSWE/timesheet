@@ -6,5 +6,6 @@ public class Row {
 	String startTime;
 	String endTime;
 	String comments;
+	String timesheet;
 	
 }
