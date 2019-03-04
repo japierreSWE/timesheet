@@ -17,7 +17,18 @@ public class ClientDAO extends DAO {
 		
 		try {
 			
-			PreparedStatement ps = conn.prepareStatement("INSERT INTO Client (name, position, manager) VALUES (?,?,?)");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Client WHERE name = ?");
+			ps.setString(1, c.getName());
+			ResultSet results = ps.executeQuery();
+			
+			while(results.next()) {
+				//if the name already exists, return an error code
+				//430 used for non-unique name
+				return 430;
+			}
+			
+			//if the name doesn't exist, insert it
+			ps = conn.prepareStatement("INSERT INTO Client (name, position, manager) VALUES (?,?,?)");
 			ps.setString(1, c.getName());
 			ps.setString(2, c.getPosition());
 			ps.setString(3, c.getManager());
