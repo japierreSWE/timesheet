@@ -71,7 +71,7 @@ public class LoginHandlerTest {
         
         
         req.username = "does not exist"; //would have made a separate test case
-        //but since usernames are unique, you can only make one account
+        //but since usernames are unique, you can only make one account inside a test
         
         jsonRequest = new Gson().toJson(req);
         input = new ByteArrayInputStream(jsonRequest.getBytes());;

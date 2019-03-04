@@ -8,6 +8,13 @@ public class Row {
 	String comments;
 	String timesheet; //id of the timesheet this is in
 	
+	public Row(String date, String startTime, String endTime, String comments) {
+		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.comments = comments;
+	}
+	
 	public void setTimesheet(String str) {
 		timesheet = str;
 	}
