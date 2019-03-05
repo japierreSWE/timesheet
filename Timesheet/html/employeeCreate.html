@@ -13,7 +13,6 @@ function createAccount() {
 	var address = document.getElementById("address").value;
 	var username = document.getElementById("username").value;
 	var password = document.getElementById("password").value;
-	var periodStart = document.getElementById("periodStart").value;
 	var verify = document.getElementById("verify").value;
 	
 	if(verify != password) {
@@ -31,7 +30,6 @@ function createAccount() {
 	data["address"] = address;
 	data["username"] = username;
 	data["password"] = password;
-	data["periodStart"] = periodStart;
 	data["verify"] = verify;
 	
 	
@@ -109,7 +107,6 @@ Address: <input type="text" id="address"><br>
 Username: <input type="text" id="username"><br>
 Password: <input type="password" id="password"><br>
 Confirm Password: <input type="password" id="verify"><br>
-Start of your first work period: <input type="date" id="periodStart"><br>
 </div>
 <button onclick="createAccount()">Create your employee account</button>
 </body>

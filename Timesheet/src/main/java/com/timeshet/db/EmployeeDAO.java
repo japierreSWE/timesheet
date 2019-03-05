@@ -25,13 +25,12 @@ public class EmployeeDAO extends DAO {
 				return 430; //will use code 430 to represent same username conflict
 			}
 			
-			ps = conn.prepareStatement("INSERT INTO Employee (employeeID, name, address, username, password, periodStart) VALUES (?,?,?,?,?,?)");
+			ps = conn.prepareStatement("INSERT INTO Employee (employeeID, name, address, username, password) VALUES (?,?,?,?,?)");
 			ps.setString(1, emp.getID());
 			ps.setString(2, emp.name);
 			ps.setString(3, emp.address);
 			ps.setString(4, emp.username);
 			ps.setString(5, emp.password);
-			ps.setDate(6, Date.valueOf(emp.periodStart));
 			ps.execute();
 			//put the employee into the database
 			return 200;

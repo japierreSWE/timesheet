@@ -89,47 +89,31 @@ public class CreateEmployeeHandler implements RequestStreamHandler {
     		String address = request.address;
     		String user = request.username;
     		String pass = request.password;
-    		String periodStart = request.periodStart;
-    		LocalDate startDate = null; //this will be the period start parsed into a date
     		boolean invalidInput = false;
     		
-    		try {
-    			startDate = LocalDate.parse(periodStart); //parse date
-    		} catch(DateTimeParseException e) {
-    			logger.log("Could not parse date");
-        		logger.log(e.toString());
-        		httpResponse = new CreateEmployeeResponse(400, null);
-        		jsonResponse.put("body", new Gson().toJson(httpResponse));
-        		invalidInput = true;
-    		}
-    		
-    		if(!invalidInput) {
     			
-    			Employee emp = new Employee(name, address, user, pass, startDate);
-    			boolean added = false;
-    			//make employee and try to put it in database
-    			try {
-    				
-    				int code = addToDatabase(emp);
-    				
-    				if(code == 200) {
-    					httpResponse = new CreateEmployeeResponse(code, emp.getID());
-    	        		jsonResponse.put("body", new Gson().toJson(httpResponse));	
-    				} else {
-    					httpResponse = new CreateEmployeeResponse(code, null);
-                		jsonResponse.put("body", new Gson().toJson(httpResponse));
-    				}
-    				
-    			} catch(Exception e) {
-    				logger.log("Could not add to database");
-    				logger.log(e.toString());
-    				httpResponse = new CreateEmployeeResponse(400, null);
+			Employee emp = new Employee(name, address, user, pass);
+			boolean added = false;
+			//make employee and try to put it in database
+			try {
+				
+				int code = addToDatabase(emp);
+				
+				if(code == 200) {
+					httpResponse = new CreateEmployeeResponse(code, emp.getID());
+	        		jsonResponse.put("body", new Gson().toJson(httpResponse));	
+				} else {
+					httpResponse = new CreateEmployeeResponse(code, null);
             		jsonResponse.put("body", new Gson().toJson(httpResponse));
-    			}
-    			
-
-    		}
-    		
+				}
+				
+			} catch(Exception e) {
+				logger.log("Could not add to database");
+				logger.log(e.toString());
+				httpResponse = new CreateEmployeeResponse(400, null);
+        		jsonResponse.put("body", new Gson().toJson(httpResponse));
+			}
+			    		
     		logger.log("result: " + jsonResponse.toJSONString());
         	OutputStreamWriter writer = new OutputStreamWriter(output, "UTF-8");
             writer.write(jsonResponse.toJSONString());  

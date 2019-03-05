@@ -6,6 +6,5 @@ public class CreateEmployeeRequest {
 	String address;
 	String username;
 	String password;
-	String periodStart;
 	
 }

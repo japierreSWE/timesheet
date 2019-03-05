@@ -33,7 +33,7 @@ public class LoginHandlerTest {
     public void testLoginHandler() throws IOException {
         LoginHandler handler = new LoginHandler();
         
-        Employee emp = new Employee("Test", "1 Test Way", "test", "test", LocalDate.of(2001, 1, 1));
+        Employee emp = new Employee("Test", "1 Test Way", "test", "test");
         
         try {
         	new EmployeeDAO().createEmployee(emp);
