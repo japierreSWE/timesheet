@@ -260,6 +260,7 @@ function submit() {
 	var timesheet = prepareTimesheet();
 	
 	if(timesheet == null) { //stop if something's wrong with the timesheet
+		createError("You didn't fill in all the fields.");
 		return;
 	}
 	
