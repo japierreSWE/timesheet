@@ -69,7 +69,7 @@ public class GetClientsHandler implements RequestStreamHandler {
 			processed = true;
     	}
     	
-    	if(!processed) {
+    	if(!processed) { //get clients (or not) then prepare appropiate response
     		ArrayList<Client> clients = retrieveClients();
     		
     		if(clients == null) {

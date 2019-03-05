@@ -92,7 +92,7 @@ public class CreateTimesheetHandler implements RequestStreamHandler {
     		String employeeID = request.employeeID;
     		String clientName = request.clientName;
     		Timesheet ts = new Timesheet(employeeID, workTitle, clientName, rows);
-    		int code = addTimesheetToDatabase(ts);
+    		int code = addTimesheetToDatabase(ts); //make the rows and timesheet, then add them to db
     		
     		httpResponse = new CreateTimesheetResponse(code);
     		jsonResponse.put("body", new Gson().toJson(httpResponse));
