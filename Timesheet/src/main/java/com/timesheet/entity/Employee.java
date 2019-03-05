@@ -26,7 +26,7 @@ public class Employee {
 		this.timesheet = null; //employee doesn't have a timesheet yet
 	}
 	
-	public Employee(String employeeID, String name, String address, String timesheet, String username, String password, LocalDate periodStart) {
+	public Employee(String employeeID, String name, String address, String timesheet, String username, String password) {
 		//for retrieving from db
 		this.employeeID = employeeID;
 		this.name = name;

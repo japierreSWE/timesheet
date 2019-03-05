@@ -24,6 +24,7 @@ public class LoginHandler implements RequestStreamHandler {
 		try {
 			return new EmployeeDAO().verify(user, pass);
 		} catch(Exception e) {
+			logger.log(e.getMessage());
 			logger.log(e.toString());
 			return 400;
 		}

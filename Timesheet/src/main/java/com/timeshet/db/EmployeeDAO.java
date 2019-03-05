@@ -73,7 +73,7 @@ public class EmployeeDAO extends DAO {
 			ResultSet results = ps.executeQuery();
 			
 			while(results.next()) { //if there is one, return it
-				Employee emp = new Employee(results.getString("employeeID"), results.getString("name"), results.getString("address"), results.getString("timesheet"), results.getString("username"), results.getString("password"), results.getDate("periodStart").toLocalDate());
+				Employee emp = new Employee(results.getString("employeeID"), results.getString("name"), results.getString("address"), results.getString("timesheet"), results.getString("username"), results.getString("password"));
 				return emp;
 			}
 			
