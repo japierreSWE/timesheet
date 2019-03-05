@@ -24,7 +24,7 @@ var employee = JSON.parse(sessionStorage.getItem("employee"));
 var count = 1;
 var hoursArr = [];
 
-function preparePage() {
+function preparePage() { //gets the clients as soon as page loads
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", client_url, true);
 	var json = JSON.stringify(""); //don't need anything in a GET request
@@ -42,6 +42,7 @@ function preparePage() {
 	
 }
 
+//processes a response to getClients
 function processResponse(text) {
 	var resp = JSON.parse(text);
 	
@@ -81,7 +82,7 @@ function showData() {
 	if(client != null) {
 		document.getElementById("manager").textContent = client.manager;
 		document.getElementById("position").textContent = client.position;
-	} else {
+	} else { //if we didn't find the client, don't put anything
 		document.getElementById("manager").textContent = "";
 		document.getElementById("position").textContent = "";
 	}
@@ -115,8 +116,8 @@ function updateTimes(element) {
 		var startArr = convertTime(startEle.value);
 		var endArr = convertTime(endEle.value);
 		var startMinutes = startArr[0]*60 + startArr[1];
-		var endMinutes = endArr[0]*60 + endArr[1];
-		var diff = (endMinutes - startMinutes) / 60.0;
+		var endMinutes = endArr[0]*60 + endArr[1]; //convert each time into # of minutes passed
+		var diff = (endMinutes - startMinutes) / 60.0; //find the difference of minutes in hours
 		
 		if(diff < 0) { //end time was less than start time
 			document.getElementById("time" + String(rowNum)).textContent = "Error: End time is before start time";
@@ -124,7 +125,7 @@ function updateTimes(element) {
 			document.getElementById("time" + String(rowNum)).textContent = diff.toFixed(2) + " hours";
 		}
 		
-		hoursArr[rowNum-1] = diff;
+		hoursArr[rowNum-1] = diff; //put it at the end
 		
 	}
 	
@@ -133,7 +134,7 @@ function updateTimes(element) {
 	
 	for(i = 0; i< hoursArr.length; i++) {
 		
-		if(hoursArr[i] != null) {
+		if(hoursArr[i] != null) { //there might be null ones in the middle. ignore those
 			total = total + hoursArr[i];
 		}
 		
@@ -143,7 +144,7 @@ function updateTimes(element) {
 	
 }
 
-//converts a time string into numbers
+//converts a time string into numbers in the form of an array
 function convertTime(timeStr) {
 	var arr = timeStr.split(":");
 	arr[0] = parseInt(arr[0]);
@@ -290,7 +291,7 @@ function submit() {
 	};
 	
 }
-
+//creates an error message
 function createError(text) {
 	
 	if(document.getElementById("error") == null) {
