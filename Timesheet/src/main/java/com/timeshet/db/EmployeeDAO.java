@@ -25,14 +25,14 @@ public class EmployeeDAO extends DAO {
 				return 430; //will use code 430 to represent same username conflict
 			}
 			
-			ps = conn.prepareStatement("INSERT INTO Employee (employeeID, name, address, username, password) VALUES (?,?,?,?,?)");
+			ps = conn.prepareStatement("INSERT INTO Employee (employeeID, name, address, username, password) VALUES (?,?,?,?,ENCODE(?,'secret'))");
 			ps.setString(1, emp.getID());
 			ps.setString(2, emp.name);
 			ps.setString(3, emp.address);
 			ps.setString(4, emp.username);
 			ps.setString(5, emp.password);
 			ps.execute();
-			//put the employee into the database
+			//put the employee into the database. encode password in order to protect data
 			return 200;
 		} catch(Exception e) {
 			System.out.println(e.toString());
@@ -46,7 +46,7 @@ public class EmployeeDAO extends DAO {
 		
 		try {
 			//find an employee with the corresponding user and password
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND password = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND DECODE(password,'secret') = ?");
 			ps.setString(1, user);
 			ps.setString(2, pass);
 			ResultSet results = ps.executeQuery();
@@ -67,7 +67,7 @@ public class EmployeeDAO extends DAO {
 		
 		try {
 			//find an employee with the corresponding user and password
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND password = ?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM Employee WHERE username = ? AND DECODE(password,'secret') = ?");
 			ps.setString(1, user);
 			ps.setString(2, pass);
 			ResultSet results = ps.executeQuery();
