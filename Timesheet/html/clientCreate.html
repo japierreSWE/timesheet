@@ -60,7 +60,7 @@ function createClient() {
 		} else { //if the error message element already exists, replace its text
 			document.getElementById("error").textContent = "You didn't fill in all the fields.";
 		}
-		
+		return;
 	}
 	
 	var json = JSON.stringify(data);
