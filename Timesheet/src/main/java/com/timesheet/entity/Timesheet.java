@@ -7,7 +7,7 @@ public class Timesheet {
 	String timesheetID;
 	String employee; //id of the employee that made this one
 	String workTitle;
-	String clientName;
+	String clientName; //name of the client this is for
 	Row[] rows;
 	
 	public Timesheet() { //no-arg
