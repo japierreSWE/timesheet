@@ -21,6 +21,11 @@ function createAccount() {
 		return;
 	}
 	
+	if(name == "" || address == "" || username == "" || password == "") {
+		createError("You didn't fill in all the fields.");
+		return;
+	}
+	
 	var data = {}; //to store json request
 	data["name"] = name;
 	data["address"] = address;
@@ -28,6 +33,7 @@ function createAccount() {
 	data["password"] = password;
 	data["periodStart"] = periodStart;
 	data["verify"] = verify;
+	
 	
 	var json = JSON.stringify(data);
 	console.log("JS: " + json);
