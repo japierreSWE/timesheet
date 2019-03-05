@@ -49,6 +49,20 @@ function createClient() {
 	data["position"] = document.getElementById("position").value;
 	data["manager"] = document.getElementById("manager").value; //store all data needed
 	
+	if(data["name"] == "" || data["position"] == "" || data["manager"] == "") {
+		
+		if(document.getElementById("error") == null) {
+			var errorMessage = document.createElement("p");
+			var text = document.createTextNode("You didn't fill in all the fields.");
+			errorMessage.appendChild(text);
+			errorMessage.id = "error";
+			document.getElementById("fillout").appendChild(errorMessage);
+		} else { //if the error message element already exists, replace its text
+			document.getElementById("error").textContent = "You didn't fill in all the fields.";
+		}
+		
+	}
+	
 	var json = JSON.stringify(data);
 	console.log("JS: " + json); //turn it into a json string
 	
