@@ -49,7 +49,7 @@ function createClient() {
 	data["position"] = document.getElementById("position").value;
 	data["manager"] = document.getElementById("manager").value; //store all data needed
 	
-	if(data["name"] == "" || data["position"] == "" || data["manager"] == "") {
+	if(data["name"] == "" || data["position"] == "" || data["manager"] == "") { //if any fields aren't filled
 		
 		if(document.getElementById("error") == null) {
 			var errorMessage = document.createElement("p");
