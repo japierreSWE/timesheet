@@ -241,7 +241,7 @@ function prepareTimesheet() {
 		row["comments"] = document.getElementById("comments" + rowNum).value;
 		
 		if(row["date"] == "" || row["startTime"] == "" || row["endTime"] == "" || row["comments"] == "") {
-			return false;
+			return null;
 			//stop if fields aren't filled in
 		}
 		
@@ -258,10 +258,19 @@ function prepareTimesheet() {
 function submit() {
 	var timesheet = prepareTimesheet();
 	
+	if(timesheet == null) { //stop if something's wrong with the timesheet
+		return;
+	}
 	
 	timesheet["employeeID"] = employee.employeeID;
 	timesheet["clientName"] = document.getElementById("clientDropdown").value;
 	timesheet["workTitle"] = document.getElementById("workTitle").value;
+	
+	if(timesheet["workTitle"] == "") { //don't submit w/o worktitle
+		createError("You didn't fill in all the fields.");
+		return;
+	}
+	
 	console.log(JSON.stringify(timesheet));
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", timesheet_url, true);
