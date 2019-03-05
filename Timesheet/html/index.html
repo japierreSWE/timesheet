@@ -55,7 +55,7 @@ function processResponse(responseText) {
 		window.location = "timesheetEdit.html";
 	} else if(response.httpCode == 430) {
 		createError("Wrong username/password.")
-	} else if(repsonse.httpCode == 400) {
+	} else if(response.httpCode == 400) {
 		createError("Internal error. Please try again.")
 	}
 	 
