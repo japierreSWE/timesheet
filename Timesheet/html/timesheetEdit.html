@@ -239,6 +239,12 @@ function prepareTimesheet() {
 		row["startTime"] = document.getElementById("start" + rowNum).value;
 		row["endTime"] = document.getElementById("end" + rowNum).value;
 		row["comments"] = document.getElementById("comments" + rowNum).value;
+		
+		if(row["date"] == "" || row["startTime"] == "" || row["endTime"] == "" || row["comments"] == "") {
+			return false;
+			//stop if fields aren't filled in
+		}
+		
 		rows.push(row);
 		
 	}
@@ -251,6 +257,8 @@ function prepareTimesheet() {
 //submits timesheet. sends it to db
 function submit() {
 	var timesheet = prepareTimesheet();
+	
+	
 	timesheet["employeeID"] = employee.employeeID;
 	timesheet["clientName"] = document.getElementById("clientDropdown").value;
 	timesheet["workTitle"] = document.getElementById("workTitle").value;
@@ -271,6 +279,19 @@ function submit() {
 		}
 		
 	};
+	
+}
+
+function createError(text) {
+	
+	if(document.getElementById("error") == null) {
+		var errorMessage = document.createElement("p");
+		errorMessage.appendChild(document.createTextNode(text));
+		errorMessage.id = "error";
+		document.getElementById("message").appendChild(errorMessage);
+	} else {
+		document.getElementById("error").textContent = text;
+	}
 	
 }
 
