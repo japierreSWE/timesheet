@@ -1,17 +1,34 @@
 'use strict';
 class LinkButton extends React.Component {
 	
-	onClick() {
+	constructor(props) {
+		super(props);
+		this.goTo = this.goTo.bind(this);
+	}
+	
+	goTo() {
 		window.location = this.props.link;
 	}
 	
 	render() {
-		return <button onclick={this.onClick}>{this.props.text}</button>;
+		return <button onClick={this.goTo}>{this.props.text}</button>;
 	}
 	
 }
+
+class Buttons extends React.Component {
+	render() {
+		return (
+			<div>
+			<LinkButton text="Create an employee account" link="employeeCreate.html"/><br />
+			<LinkButton text="Create an client account" link="clientCreate.html"/>
+			</div>
+		);
+	}
+}
+
 ReactDOM.render(
-		<LinkButton text="Create an employee account" link="employeeCreate.html" />,
+		<Buttons />,
 		document.getElementById("buttons")
 );
 //

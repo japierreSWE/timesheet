@@ -11,15 +11,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var LinkButton = function (_React$Component) {
 	_inherits(LinkButton, _React$Component);
 
-	function LinkButton() {
+	function LinkButton(props) {
 		_classCallCheck(this, LinkButton);
 
-		return _possibleConstructorReturn(this, (LinkButton.__proto__ || Object.getPrototypeOf(LinkButton)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (LinkButton.__proto__ || Object.getPrototypeOf(LinkButton)).call(this, props));
+
+		_this.goTo = _this.goTo.bind(_this);
+		return _this;
 	}
 
 	_createClass(LinkButton, [{
-		key: "onClick",
-		value: function onClick() {
+		key: "goTo",
+		value: function goTo() {
 			window.location = this.props.link;
 		}
 	}, {
@@ -27,7 +30,7 @@ var LinkButton = function (_React$Component) {
 		value: function render() {
 			return React.createElement(
 				"button",
-				{ onclick: this.onClick },
+				{ onClick: this.goTo },
 				this.props.text
 			);
 		}
@@ -36,5 +39,30 @@ var LinkButton = function (_React$Component) {
 	return LinkButton;
 }(React.Component);
 
-ReactDOM.render(React.createElement(LinkButton, { text: "Create an employee account", link: "employeeCreate.html" }), document.getElementById("buttons"));
+var Buttons = function (_React$Component2) {
+	_inherits(Buttons, _React$Component2);
+
+	function Buttons() {
+		_classCallCheck(this, Buttons);
+
+		return _possibleConstructorReturn(this, (Buttons.__proto__ || Object.getPrototypeOf(Buttons)).apply(this, arguments));
+	}
+
+	_createClass(Buttons, [{
+		key: "render",
+		value: function render() {
+			return React.createElement(
+				"div",
+				null,
+				React.createElement(LinkButton, { text: "Create an employee account", link: "employeeCreate.html" }),
+				React.createElement("br", null),
+				React.createElement(LinkButton, { text: "Create an client account", link: "clientCreate.html" })
+			);
+		}
+	}]);
+
+	return Buttons;
+}(React.Component);
+
+ReactDOM.render(React.createElement(Buttons, null), document.getElementById("buttons"));
 //

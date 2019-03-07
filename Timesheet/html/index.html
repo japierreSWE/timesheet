@@ -5,8 +5,6 @@
 
 </head>
 
-<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 <script>
 
 var login_url = "https://x1me907yx3.execute-api.us-east-2.amazonaws.com/Alpha/login";
@@ -92,8 +90,11 @@ function createError(text) {
 <!-- Login stuff -->
 <br>
 <h2>Create an account</h2>
-<button type=button onclick="toEmployee()">Create an employee account</button><br>
-<button type=button onclick="toClient()">Create a client</button>
+<div id="buttons"></div>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="LinkButton.js"></script>
+
 </body>
 
 </html>
