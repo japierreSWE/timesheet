@@ -23,6 +23,7 @@ class Row extends React.Component {
 		var time = this.timeRef.current;
 		
 		if(start.value == "" || end.value == "") { //don't do anything unless both have values
+			time.textContent = "";
 			return;
 		} else {	
 			var startArr = convertTime(start.value);
@@ -59,16 +60,41 @@ class Timesheet extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {rowIDs: [1]};
+		this.addRow = this.addRow.bind(this);
+		this.deleteRow = this.deleteRow.bind(this);
 	}
 	
+	//generates a React Row with appropriate props
 	makeRow(rowID) {
 		return <Row rowID={String(rowID)} key={String(rowID)} />;
+	}
+	
+	//adds a row to the end
+	addRow() {
+		this.setState(function(state) {
+			var IDArr = this.state.rowIDs;
+			IDArr.push(IDArr.length + 1); //adds the next number to the end
+			return {rowIDs: IDArr};
+		});
+	}
+	
+	//deletes a row from the end
+	deleteRow() {
+		this.setState(function(state) {
+			var IDArr = this.state.rowIDs;
+			if(IDArr.length > 1) { //don't delete if there's only one row. timesheets should have at least one row
+				IDArr.pop();
+			}
+			return {rowIDs: IDArr};
+		});
 	}
 	
 	render() {
 		return (
 			<div id="rows">
-			{this.state.rowIDs.map(rowID => this.makeRow(rowID))}
+			{this.state.rowIDs.map(rowID => this.makeRow(rowID))}<br/>
+			<button onClick={this.addRow}>Add Row</button>
+			<button onClick={this.deleteRow}>Delete Row</button>
 			</div>
 		)
 	}

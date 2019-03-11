@@ -43,6 +43,7 @@ var Row = function (_React$Component) {
 
 			if (start.value == "" || end.value == "") {
 				//don't do anything unless both have values
+				time.textContent = "";
 				return;
 			} else {
 				var startArr = convertTime(start.value);
@@ -115,13 +116,45 @@ var Timesheet = function (_React$Component2) {
 		var _this2 = _possibleConstructorReturn(this, (Timesheet.__proto__ || Object.getPrototypeOf(Timesheet)).call(this, props));
 
 		_this2.state = { rowIDs: [1] };
+		_this2.addRow = _this2.addRow.bind(_this2);
+		_this2.deleteRow = _this2.deleteRow.bind(_this2);
 		return _this2;
 	}
+
+	//generates a React Row with appropriate props
+
 
 	_createClass(Timesheet, [{
 		key: "makeRow",
 		value: function makeRow(rowID) {
 			return React.createElement(Row, { rowID: String(rowID), key: String(rowID) });
+		}
+
+		//adds a row to the end
+
+	}, {
+		key: "addRow",
+		value: function addRow() {
+			this.setState(function (state) {
+				var IDArr = this.state.rowIDs;
+				IDArr.push(IDArr.length + 1); //adds the next number to the end
+				return { rowIDs: IDArr };
+			});
+		}
+
+		//deletes a row from the end
+
+	}, {
+		key: "deleteRow",
+		value: function deleteRow() {
+			this.setState(function (state) {
+				var IDArr = this.state.rowIDs;
+				if (IDArr.length > 1) {
+					//don't delete if there's only one row. timesheets should have at least one row
+					IDArr.pop();
+				}
+				return { rowIDs: IDArr };
+			});
 		}
 	}, {
 		key: "render",
@@ -133,7 +166,18 @@ var Timesheet = function (_React$Component2) {
 				{ id: "rows" },
 				this.state.rowIDs.map(function (rowID) {
 					return _this3.makeRow(rowID);
-				})
+				}),
+				React.createElement("br", null),
+				React.createElement(
+					"button",
+					{ onClick: this.addRow },
+					"Add Row"
+				),
+				React.createElement(
+					"button",
+					{ onClick: this.deleteRow },
+					"Delete Row"
+				)
 			);
 		}
 	}]);
