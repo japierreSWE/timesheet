@@ -23,46 +23,45 @@ var Row = function (_React$Component) {
 		return _this;
 	}
 
-	//converts a time string into numbers in the form of an array
-
-
 	_createClass(Row, [{
-		key: "convertTime",
-		value: function convertTime(timeStr) {
-			var arr = timeStr.split(":");
-			arr[0] = parseInt(arr[0]);
-			arr[1] = parseInt(arr[1]);
-			return arr;
-		}
-	}, {
 		key: "onTimeChange",
 		value: function onTimeChange() {
 			var start = this.startRef.current;
 			var end = this.endRef.current;
 			var time = this.timeRef.current;
+			this.props.change(this.props.rowID, start.value, end.value);
 
-			if (start.value == "" || end.value == "") {
-				//don't do anything unless both have values
-				time.textContent = "";
-				return;
-			} else {
-				var startArr = convertTime(start.value);
-				var endArr = convertTime(end.value);
-				var startMinutes = startArr[0] * 60 + startArr[1];
-				var endMinutes = endArr[0] * 60 + endArr[1]; //convert each time into # of minutes passed
-				var diff = (endMinutes - startMinutes) / 60.0; //find the difference of minutes in hours
-
-				if (diff < 0) {
-					time.textContent = "Error: End time is before start time";
-				} else {
-					time.textContent = diff.toFixed(2) + " hours";
-				}
-			}
+			/*if(start.value == "" || end.value == "") { //don't do anything unless both have values
+   	time.textContent = "";
+   	return;
+   } else {	
+   	var startArr = convertTime(start.value);
+   	var endArr = convertTime(end.value);
+   	var startMinutes = startArr[0]*60 + startArr[1];
+   	var endMinutes = endArr[0]*60 + endArr[1]; //convert each time into # of minutes passed
+   	var diff = (endMinutes - startMinutes) / 60.0; //find the difference of minutes in hours
+   	
+   	if(diff < 0) {
+   		time.textContent = "Error: End time is before start time";
+   	} else {
+   		time.textContent = diff.toFixed(2) + " hours";
+   	}
+   	
+   }*/
 		}
 	}, {
 		key: "render",
 		value: function render() {
 			var id = String(this.props.rowID);
+			var timeString;
+			if (this.props.time == 0 || this.props.time == null || this.props.time == undefined) {
+				timeString = "";
+			} else if (this.props.time < 0) {
+				timeString = "Error: Start time is after end time";
+			} else {
+				timeString = this.props.time.toFixed(2) + " hours";
+			}
+
 			return React.createElement(
 				"div",
 				{ id: "row" + id },
@@ -99,7 +98,11 @@ var Row = function (_React$Component) {
 					null,
 					" Time spent:"
 				),
-				React.createElement("p", { id: "time" + id, ref: this.timeRef })
+				React.createElement(
+					"p",
+					{ id: "time" + id, ref: this.timeRef },
+					timeString
+				)
 			);
 		}
 	}]);
@@ -115,9 +118,12 @@ var Timesheet = function (_React$Component2) {
 
 		var _this2 = _possibleConstructorReturn(this, (Timesheet.__proto__ || Object.getPrototypeOf(Timesheet)).call(this, props));
 
-		_this2.state = { rowIDs: [1] };
+		_this2.state = { rowIDs: [1], times: [0], total: 0 };
 		_this2.addRow = _this2.addRow.bind(_this2);
 		_this2.deleteRow = _this2.deleteRow.bind(_this2);
+		_this2.makeRow = _this2.makeRow.bind(_this2);
+		_this2.handleTimesChange = _this2.handleTimesChange.bind(_this2);
+		_this2.findTotalTime = _this2.findTotalTime.bind(_this2);
 		return _this2;
 	}
 
@@ -127,7 +133,10 @@ var Timesheet = function (_React$Component2) {
 	_createClass(Timesheet, [{
 		key: "makeRow",
 		value: function makeRow(rowID) {
-			return React.createElement(Row, { rowID: String(rowID), key: String(rowID) });
+			//1st rowID is 1. so rowID-1 is the index of the row
+			var index = rowID - 1;
+			var time = this.state.times[index];
+			return React.createElement(Row, { rowID: String(rowID), key: String(rowID), time: time, change: this.handleTimesChange });
 		}
 
 		//adds a row to the end
@@ -137,8 +146,10 @@ var Timesheet = function (_React$Component2) {
 		value: function addRow() {
 			this.setState(function (state) {
 				var IDArr = this.state.rowIDs;
+				var timesArr = this.state.times;
+				timesArr.push(0);
 				IDArr.push(IDArr.length + 1); //adds the next number to the end
-				return { rowIDs: IDArr };
+				return { rowIDs: IDArr, times: timesArr };
 			});
 		}
 
@@ -149,12 +160,73 @@ var Timesheet = function (_React$Component2) {
 		value: function deleteRow() {
 			this.setState(function (state) {
 				var IDArr = this.state.rowIDs;
+				var timesArr = this.state.times;
 				if (IDArr.length > 1) {
 					//don't delete if there's only one row. timesheets should have at least one row
 					IDArr.pop();
+					timesArr.pop();
 				}
-				return { rowIDs: IDArr };
+				return { rowIDs: IDArr, times: timesArr };
 			});
+			this.findTotalTime();
+		}
+
+		//converts a time string into numbers in the form of an array
+
+	}, {
+		key: "convertTime",
+		value: function convertTime(timeStr) {
+			var arr = timeStr.split(":");
+			arr[0] = parseInt(arr[0]);
+			arr[1] = parseInt(arr[1]);
+			return arr;
+		}
+
+		//find the total amount of hours spent and changes state accordingly
+
+	}, {
+		key: "findTotalTime",
+		value: function findTotalTime() {
+			this.setState(function (state) {
+				var sum = 0;
+				for (i = 0; i < state.times.length; i++) {
+					if (state.times[i] != null && state.times[i] != undefined) {
+						//ignore null and undefined values
+						sum += state.times[i];
+					}
+				}
+				return { total: sum };
+			});
+		}
+
+		//runs when a row's times changes
+
+	}, {
+		key: "handleTimesChange",
+		value: function handleTimesChange(rowID, startTime, endTime) {
+			var index = parseInt(rowID) - 1;
+
+			if (startTime == "" || endTime == "") {
+				//if not both fields have time values, set the row's time to 0
+				this.setState(function (state) {
+					state.times[index] = 0;
+					return { times: state.times };
+				});
+			} else {
+				var startArr = convertTime(startTime);
+				var endArr = convertTime(endTime);
+				var startMinutes = startArr[0] * 60 + startArr[1];
+				var endMinutes = endArr[0] * 60 + endArr[1]; //convert each time into # of minutes passed
+				var diff = (endMinutes - startMinutes) / 60.0; //find the difference of minutes in hours
+
+				this.setState(function (state) {
+					//set the row's time in the state
+					state.times[index] = diff;
+					return { times: state.times };
+				});
+
+				this.findTotalTime();
+			}
 		}
 	}, {
 		key: "render",
@@ -164,6 +236,17 @@ var Timesheet = function (_React$Component2) {
 			return React.createElement(
 				"div",
 				{ id: "rows" },
+				React.createElement(
+					"p",
+					null,
+					"Total hours worked:"
+				),
+				React.createElement(
+					"p",
+					null,
+					" ",
+					this.state.total
+				),
 				this.state.rowIDs.map(function (rowID) {
 					return _this3.makeRow(rowID);
 				}),

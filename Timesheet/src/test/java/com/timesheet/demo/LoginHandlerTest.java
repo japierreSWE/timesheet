@@ -70,8 +70,7 @@ public class LoginHandlerTest {
         Assert.assertEquals(200, resp.httpCode);
         
         
-        req.username = "does not exist"; //would have made a separate test case
-        //but since usernames are unique, you can only make one account inside a test
+        req.username = "does not exist"; 
         
         jsonRequest = new Gson().toJson(req);
         input = new ByteArrayInputStream(jsonRequest.getBytes());;
