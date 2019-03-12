@@ -24,9 +24,6 @@ public class CreateClientHandlerTest {
 		con.setFunctionName(name);
 		return con;
 	}
-	
-    private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
-    private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
 
     @Test
     public void testCreateClientHandler() throws IOException {

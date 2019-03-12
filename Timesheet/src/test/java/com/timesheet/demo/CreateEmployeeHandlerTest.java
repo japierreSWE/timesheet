@@ -27,9 +27,6 @@ public class CreateEmployeeHandlerTest {
 	}
 	
 
-    private static final String SAMPLE_INPUT_STRING = "{\"foo\": \"bar\"}";
-    private static final String EXPECTED_OUTPUT_STRING = "{\"FOO\": \"BAR\"}";
-
     @Test
     public void testCreateEmployeeHandler() throws IOException {
         CreateEmployeeHandler handler = new CreateEmployeeHandler();
