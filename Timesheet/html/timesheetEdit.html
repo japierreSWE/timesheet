@@ -225,14 +225,12 @@ function deleteRow() {
 //prepares a timesheet to send via JSON and returns it
 function prepareTimesheet() {
 	
-	if(hoursArr.length < count) { //this means that times haven't been entered in each row
-		return null;
-	}
-	
 	timesheet = {};
 	rows = [];
+	var rowsDiv = document.getElementById("rows");
+	var numRows = rowsDiv.childNodes.length;
 	
-	for(i = 0; i<hoursArr.length; i++) {
+	for(i = 0; i<numRows; i++) {
 		
 		row = {};
 		rowNum = String(i+1);
@@ -346,7 +344,7 @@ Manager: <p id="manager"></p><br>
 Position: <p id="position"></p>
 <br>
 <h3>Timesheet</h3>
-Total hours worked: <p id="total"></p>
+<!--  Total hours worked: <p id="total"></p>
 <div id="otherrows">
 	<div id="row1">
 		<p>Date: </p><input type="date" id="date1"> <p>Start Time: </p><input type="time" id="start1" onchange="updateTimes(this)">
@@ -354,14 +352,14 @@ Total hours worked: <p id="total"></p>
 		<p>Time Spent: </p><p id="time1"></p>
 	</div>
 </div><br>
-<button onclick="addRow()">Add Row</button> <button onclick="deleteRow()">Delete Row</button><br>
-<button onclick="submit()">Submit Timesheet</button>
-<div id="message"></div>
-
-<div id="sheet"></div>
+<button onclick="addRow()">Add Row</button> <button onclick="deleteRow()">Delete Row</button><br>-->
+<div id="root"></div>
 <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 <script src="Timesheet.js"></script>
+<button onclick="submit()">Submit Timesheet</button>
+<div id="message"></div>
+
 </body>
 
 </html>

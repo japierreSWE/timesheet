@@ -150,13 +150,15 @@ class Timesheet extends React.Component {
 	
 	render() {
 		return (
-			<div id="rows">
-			<p>Total hours worked:</p><p> {this.state.total}</p>
-			{this.state.rowIDs.map(rowID => this.makeRow(rowID))}<br/>
-			<button onClick={this.addRow}>Add Row</button>
-			<button onClick={this.deleteRow}>Delete Row</button>
+			<div id="sheet">
+				<p>Total hours worked:</p><p> {this.state.total}</p>
+				<div id="rows">
+					{this.state.rowIDs.map(rowID => this.makeRow(rowID))}
+				</div><br/>
+				<button onClick={this.addRow}>Add Row</button>
+				<button onClick={this.deleteRow}>Delete Row</button>
 			</div>
 		)
 	}
 }
-ReactDOM.render(<Timesheet />, document.getElementById("sheet"));
+ReactDOM.render(<Timesheet />, document.getElementById("root"));

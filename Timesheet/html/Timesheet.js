@@ -235,7 +235,7 @@ var Timesheet = function (_React$Component2) {
 
 			return React.createElement(
 				"div",
-				{ id: "rows" },
+				{ id: "sheet" },
 				React.createElement(
 					"p",
 					null,
@@ -247,9 +247,13 @@ var Timesheet = function (_React$Component2) {
 					" ",
 					this.state.total
 				),
-				this.state.rowIDs.map(function (rowID) {
-					return _this3.makeRow(rowID);
-				}),
+				React.createElement(
+					"div",
+					{ id: "rows" },
+					this.state.rowIDs.map(function (rowID) {
+						return _this3.makeRow(rowID);
+					})
+				),
 				React.createElement("br", null),
 				React.createElement(
 					"button",
@@ -268,4 +272,4 @@ var Timesheet = function (_React$Component2) {
 	return Timesheet;
 }(React.Component);
 
-ReactDOM.render(React.createElement(Timesheet, null), document.getElementById("sheet"));
+ReactDOM.render(React.createElement(Timesheet, null), document.getElementById("root"));
