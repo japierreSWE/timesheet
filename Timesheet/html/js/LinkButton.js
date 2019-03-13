@@ -11,7 +11,7 @@ class LinkButton extends React.Component {
 	}
 	
 	render() {
-		return <button onClick={this.goTo}>{this.props.text}</button>;
+		return <button onClick={this.goTo} class="btn btn-secondary">{this.props.text}</button>;
 	}
 	
 }
@@ -20,7 +20,7 @@ class Buttons extends React.Component {
 	render() {
 		return (
 			<div>
-			<LinkButton text="Create an employee account" link="employeeCreate.html"/><br />
+			<LinkButton text="Create an employee account" link="employeeCreate.html"/><br/><br/>
 			<LinkButton text="Create an client account" link="clientCreate.html"/>
 			</div>
 		);

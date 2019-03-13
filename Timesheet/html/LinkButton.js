@@ -30,7 +30,7 @@ var LinkButton = function (_React$Component) {
 		value: function render() {
 			return React.createElement(
 				"button",
-				{ onClick: this.goTo },
+				{ onClick: this.goTo, "class": "btn btn-secondary" },
 				this.props.text
 			);
 		}
@@ -55,6 +55,7 @@ var Buttons = function (_React$Component2) {
 				"div",
 				null,
 				React.createElement(LinkButton, { text: "Create an employee account", link: "employeeCreate.html" }),
+				React.createElement("br", null),
 				React.createElement("br", null),
 				React.createElement(LinkButton, { text: "Create an client account", link: "clientCreate.html" })
 			);
