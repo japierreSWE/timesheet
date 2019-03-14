@@ -155,8 +155,8 @@ class Timesheet extends React.Component {
 				<div id="rows">
 					{this.state.rowIDs.map(rowID => this.makeRow(rowID))}
 				</div><br/>
-				<button onClick={this.addRow}>Add Row</button>
-				<button onClick={this.deleteRow}>Delete Row</button>
+				<button onClick={this.addRow} class="btn btn-secondary">Add Row</button>
+				<button onClick={this.deleteRow} class="btn btn-secondary">Delete Row</button>
 			</div>
 		)
 	}

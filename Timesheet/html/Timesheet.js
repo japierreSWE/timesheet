@@ -257,12 +257,12 @@ var Timesheet = function (_React$Component2) {
 				React.createElement("br", null),
 				React.createElement(
 					"button",
-					{ onClick: this.addRow },
+					{ onClick: this.addRow, "class": "btn btn-secondary" },
 					"Add Row"
 				),
 				React.createElement(
 					"button",
-					{ onClick: this.deleteRow },
+					{ onClick: this.deleteRow, "class": "btn btn-secondary" },
 					"Delete Row"
 				)
 			);
