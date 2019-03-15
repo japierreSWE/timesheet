@@ -24,7 +24,8 @@ public class CreateClientHandlerTest {
 		con.setFunctionName(name);
 		return con;
 	}
-
+	
+	//only works if db has been emptied of this client
     @Test
     public void testCreateClientHandler() throws IOException {
         CreateClientHandler handler = new CreateClientHandler();
