@@ -55,5 +55,25 @@ public class CreateClientHandlerTest {
         // TODO: validate output here if needed.
         System.out.println(sampleOutputString);
         Assert.assertEquals(200, resp.httpCode);
+        
+        //do it again, should be 430 this time
+        input = new ByteArrayInputStream(jsonRequest.getBytes());;
+        output = new ByteArrayOutputStream();
+
+        handler.handleRequest(input, output, createContext("random"));
+        sampleOutputString = output.toString();
+        
+        body = null;
+        try {
+        	JSONParser parser = new JSONParser();
+        	JSONObject jsonResponse = (JSONObject)parser.parse(sampleOutputString);
+        	body = (String)jsonResponse.get("body");
+        } catch(Exception e) {
+        	System.out.println("problem");
+        }
+        
+        resp = new Gson().fromJson(body, CreateClientResponse.class);
+        System.out.println(sampleOutputString);
+        Assert.assertEquals(430, resp.httpCode);
     }
 }
