@@ -26,7 +26,7 @@ public class CreateEmployeeHandlerTest {
 		return con;
 	}
 	
-
+	//works only if db has been emptied of this employee
     @Test
     public void testCreateEmployeeHandler() throws IOException {
         CreateEmployeeHandler handler = new CreateEmployeeHandler();
@@ -59,6 +59,30 @@ public class CreateEmployeeHandlerTest {
         CreateEmployeeResponse resp = new Gson().fromJson(body, CreateEmployeeResponse.class);
         
         Assert.assertEquals(200, resp.httpCode);
+        
+        //do it with the same user, should be 430.
+        jsonRequest = new Gson().toJson(req);
+        
+        
+        input = new ByteArrayInputStream(jsonRequest.getBytes());
+        output = new ByteArrayOutputStream();
+
+        handler.handleRequest(input, output, createContext("random"));
+
+        // TODO: validate output here if needed.
+        sampleOutputString = output.toString();
+        System.out.println(sampleOutputString);
+        body = null;
+        try {
+        	JSONParser parser = new JSONParser();
+        	JSONObject jsonResponse = (JSONObject)parser.parse(sampleOutputString);
+        	body = (String)jsonResponse.get("body");
+        } catch(Exception e) {
+        	System.out.println("problem");
+        }
+        
+        resp = new Gson().fromJson(body, CreateEmployeeResponse.class);
+        Assert.assertEquals(430, resp.httpCode);
     }
     
 }
